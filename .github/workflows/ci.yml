@@ -54,3 +54,7 @@ jobs:
 
       - name: Docker build
         run: docker build -t file-storage-api:ci .
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+

@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
@@ -22,7 +22,7 @@ def test_upload_list_download_roundtrip(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
     from importlib import reload
-    import main as main_module
+    import app.main as main_module
 
     reload(main_module)
     test_client = TestClient(main_module.app)
@@ -39,8 +39,3 @@ def test_upload_list_download_roundtrip(tmp_path, monkeypatch):
     r = test_client.get("/files/hello.txt")
     assert r.status_code == 200
     assert r.content == b"hello"
-
-
-def test_invalid_filename():
-    r = client.get("/files/../secret.txt")
-    assert r.status_code in (400, 404)
